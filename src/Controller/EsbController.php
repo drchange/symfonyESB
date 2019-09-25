@@ -1,0 +1,115 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Swagger\Annotations as SWG;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Manager\ApiManager;
+use App\Manager\RequestManager;
+use App\Service\ParameterService;
+use App\Entity\Request as Requete;
+use App\Exception\EsbException;
+use \DateTime;
+use App\Model\ResponseRequest;
+
+class EsbController extends AbstractController
+{
+    /**
+     * @Rest\Post("/api/{apiref}/run")
+     * @Rest\View
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the result",
+     * )
+     *
+     * 
+     * @SWG\Parameter(
+     *     name="account",
+     *     in="formData",
+     *     type="string",
+     *     description="Account"
+     * )
+     * 
+     * @SWG\Parameter(
+     *     name="amount",
+     *     in="formData",
+     *     type="string",
+     *     description="Amount"
+     * )
+     * 
+     * @SWG\Parameter(
+     *     name="serviceid",
+     *     in="formData",
+     *     type="string",
+     *     description="Service Id"
+     * )
+     *
+     */
+    public function runPost(Request $request,
+                            ApiManager $apiMng,
+                            RequestManager $requestMng,
+                            ParameterService $paramService,
+                            string $apiref)
+    {
+
+        try{
+            $requete = new Requete();
+            $api = $apiMng->findOneByRef($apiref);
+            if($api == null){
+                throw new EsbException(404, "API not Found");
+            }
+            $requete->setApi($api);
+            $requete->setDate(new DateTime());
+            $requete->setStatus(false);
+            $requete = $requestMng->save($requete);
+
+            /* Get In parameters */
+            $response = $paramService->getParams($api, $request, "in");
+            $result = new ResponseRequest(500, $response->{$api->getMessageParam()});
+            $decision = $response->{$api->getDecisionParam()};
+            $success = explode(",", $api->getValueSuccess());
+            $info = explode(",", $api->getValueInfo());
+            if(in_array($decision, $success)){
+                $requete->setStatus(true);
+                $requete = $requestMng->save($requete);
+                $result->setCode(200);
+            }else if(in_array($decision, $info)){
+                $requete->setStatus(true);
+                $requete = $requestMng->save($requete);
+                $result->setCode(201);
+            }
+        }catch(EsbException $e){
+            $result = new ResponseRequest($e->getCode(), $e->getMessage());
+        }
+        
+
+        $data = $this->get('serializer')->serialize($result, 'json');
+        $response = new Response($data);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+         
+    }
+
+     /**
+     * @Rest\Get("/api/{apiref}/run")
+     * @Rest\View
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the result",
+     * )
+     *
+     *
+     */
+    public function runGet()
+    {
+        return $this->render('esb/index.html.twig', [
+            'controller_name' => 'EsbController',
+        ]);
+    }
+}
