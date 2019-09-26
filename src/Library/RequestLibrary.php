@@ -20,7 +20,7 @@ class RequestLibrary
                 break;
             
             default:
-                # code...
+                return json_decode($response);
                 break;
         }
     }

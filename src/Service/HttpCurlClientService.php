@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Manager\ParameterManager;
 use Symfony\Component\HttpClient\CurlHttpClient;
 
 

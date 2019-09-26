@@ -4,12 +4,8 @@ namespace App\Service;
 
 use App\Entity\Api;
 use App\Service\HttpCurlClientService;
-use App\Model\ResponseRequest;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use App\Library\RequestLibrary;
+use App\Service\ResponseService;
+
 
 
 /* @class service send request service */
@@ -19,23 +15,19 @@ class SendRequestService
     /* @var HttpCurlClientService */
     private $http;
 
-    /* @var RequestLibrary */
-    private $libRequest;
+    /* @var ResponseService */
+    private $responseService;
 
     public function __construct(HttpCurlClientService $http,
-                                RequestLibrary $libRequest)
+                                ResponseService $responseService)
     {
         $this->http = $http;
-        $this->libRequest = $libRequest;
+        $this->responseService = $responseService;
     }
 
     /* @function send request */
     public function run(Api $api, array $params)
     {
-        $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
-
         $techno = $api->getTechno()->getName();
         switch ($techno) {
             case 'REST':
@@ -45,6 +37,15 @@ class SendRequestService
                         break;
 
                     case 'xml':
+                        $xml = trim($api->getSoapTemplate());
+                        $parameters = $api->getParameters();
+                        foreach ($parameters as $param) {
+                            ${$param->getOutName()} = $params[$param->getOutName()];
+                            $search = '$' . $param->getOutName();
+                            $replace =  ${$param->getOutName()};
+                            $xml = str_replace($search, $replace, $xml);
+                        }
+                        $response = $this->http->sendPOST($api->getEndpoint(),$xml,'xml');
                         //$response = $this->http->push($api->getEndpoint(),$params, $api->getMethod());
                         break;
                     
@@ -52,14 +53,18 @@ class SendRequestService
                         # code...
                         break;
                 }
-                $response = $this->libRequest->normalize($response, $api->getBodyFormat());   
                 break;
 
             case 'SOAP':
-                $soap = $api->getSoapTemplate();
-                $soapContent = <<<EOF
-$soap
-EOF;
+                $xml = trim($api->getSoapTemplate());
+                $parameters = $api->getParameters();
+                foreach ($parameters as $param) {
+                    ${$param->getOutName()} = $params[$param->getOutName()];
+                    $search = '$' . $param->getOutName();
+                    $replace =  ${$param->getOutName()};
+                    $xml = str_replace($search, $replace, $xml);
+                }
+                $response = $this->http->sendPOST($api->getEndpoint(),$xml,'xml');
 
                 break;
             
@@ -68,6 +73,7 @@ EOF;
                 break;
         }
 
+        $response = $this->responseService->normalize($response, $api->getBodyFormat(), $api->getXmltagversion());   
         return $response;
     }
     

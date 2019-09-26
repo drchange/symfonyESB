@@ -1,0 +1,60 @@
+# PHP
+# Test and package your PHP project.
+# Add steps that run tests, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/php
+
+trigger: [master, develop, release/production, feature/*, fix/*]
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  phpVersion: 7.2
+
+steps:
+- script: |
+    sudo update-alternatives --set php /usr/bin/php$(phpVersion)
+    sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
+    sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
+    sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
+    sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+    php -version
+  displayName: 'Use PHP version $(phpVersion)'
+
+- script: |
+   composer global require sebastian/phpcpd
+   composer global require phploc/phploc
+   composer global require phpmd/phpmd
+   composer global require squizlabs/php_codesniffer
+   composer global require pdepend/pdepend
+  displayName: 'install ci dependencies'
+
+- script: | 
+   cp .env.dev.dist .env.dev.local
+   cp .env.test.dist .env.test.local
+   cp phpunit.xml.dist phpunit.xml
+   cp phpcs.xml.dist phpcs.xml
+  displayName: 'define environments variables'
+
+- script: composer install
+  displayName: 'composer install'
+
+- script: composer require phpunit/phpunit "6.5.14"
+  displayName: 'composer install phpunit'
+
+- script: |
+   ~/.composer/vendor/bin/pdepend --summary-xml=phpdepend_summary.xml src/
+   ~/.composer/vendor/bin/phploc src/
+  displayName: 'Code statistics'
+
+- script: vendor/bin/phpunit
+  displayName: 'Run tests with phpunit'
+
+- script: vendor/bin/phpcs --extensions=php --standard=PSR1,PSR2 src/
+  displayName: 'Run Code Review with phpcs PSR1 and PSR2'
+
+- script: ~/.composer/vendor/bin/phpmd src/ text cleancode,codesize,design,unusedcode,naming,controversial
+  displayName: 'Run Code Review with phpmd'
+
+- script: ~/.composer/vendor/bin/phpcpd src/
+  displayName: 'Run Code Review with phpcpd'

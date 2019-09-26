@@ -16,7 +16,6 @@ final class TechnologyAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
-            ->add('id')
             ->add('name')
             ;
     }
@@ -24,7 +23,6 @@ final class TechnologyAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->add('id')
             ->add('name')
             ->add('_action', null, [
                 'actions' => [
@@ -45,7 +43,6 @@ final class TechnologyAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
-            ->add('id')
             ->add('name')
             ;
     }

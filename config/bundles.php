@@ -22,4 +22,10 @@ return [
     Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle::class => ['all' => true],
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     FOS\RestBundle\FOSRestBundle::class => ['all' => true],
+    FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
+    Sonata\EasyExtendsBundle\SonataEasyExtendsBundle::class => ['all' => true],
+    FOS\UserBundle\FOSUserBundle::class => ['all' => true],
+    Sonata\UserBundle\SonataUserBundle::class => ['all' => true],
+    Raindrop\SonataThemeBundle\RaindropSonataThemeBundle::class => ['all' => true],
+    App\Application\Sonata\UserBundle\ApplicationSonataUserBundle::class => ['all' => true],
 ];

@@ -38,8 +38,7 @@ class ParameterService
                 $params[$param->getOutName()] = $request->get($param->getInName());
             }    
         }
-        $response = $this->sendRequest->run($api, $params);
-        return $response;
+        return $this->sendRequest->run($api, $params);
     }
     
 }

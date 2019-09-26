@@ -10,6 +10,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 
 
 final class ParameterAdmin extends AbstractAdmin
@@ -51,13 +53,24 @@ final class ParameterAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
-            ->add('api', ModelType::class,['property'=>'ref'])
-            ->add('inName')
-            ->add('outName')
-            ->add('isStatic')
-            ->add('valueStatic')
-            ->add('soapTree')
-            ->add('flow')
+            ->tab('Général')
+                ->with('', ['class' => 'col-md-12'])          
+                    ->add('api', ModelType::class,['property'=>'ref', 'label' => 'WebService', 'required' => true, 'disabled' => true])
+                    ->add('inName', null, ['label'=> 'Nom en entré'])
+                    ->add('outName', null, ['label'=> 'Nom en sortie'])
+                    ->add('isStatic', null, ['label'=> 'Statique'])
+                    ->add('valueStatic', null, ['label'=> 'Valeur statique'])
+                    ->add('flow', ChoiceType::class, ['label'=>'Type',
+                        'choices' => [
+                            'entrée' => 'in',
+                            'sortie' => 'out'
+                    ]])
+                ->end()
+            ->end()
+            ->tab('XML/SOAP')
+            
+            ->end()
+            
             ;
     }
 

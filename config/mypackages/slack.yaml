@@ -1,0 +1,10 @@
+parameters:
+    # ... some parameters
+    slack:
+        url: '%env(SLACK_BOT_API_URL)%'
+        sender: 'AfrikPayCore'
+        channelcore: '%env(SLACK_BOT_API_CHANNEL)%'
+        icon_url: https://afrikpay.com/fr/img/afrikpay2.png
+        
+services:
+    # ... some services

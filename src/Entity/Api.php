@@ -99,6 +99,16 @@ class Api
      */
     private $ref;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $xmltagversion;
+
     public function __construct()
     {
         $this->parameters = new ArrayCollection();
@@ -336,6 +346,30 @@ class Api
     public function setRef(string $ref): self
     {
         $this->ref = $ref;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getXmltagversion(): ?string
+    {
+        return $this->xmltagversion;
+    }
+
+    public function setXmltagversion(?string $xmltagversion): self
+    {
+        $this->xmltagversion = $xmltagversion;
 
         return $this;
     }

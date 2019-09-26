@@ -3,6 +3,10 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+
+imports:
+    - { resource: mypackages/slack.yaml }
+
 parameters:
 
 services:
@@ -26,44 +30,47 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+
+    admin.category:
+        class: App\Admin\CategoryAdmin
+        arguments: [~, App\Entity\Category, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Admininstration, label: Nos Produits }
+        public: true
+
+
     admin.api:
         class: App\Admin\ApiAdmin
         arguments: [~, App\Entity\Api, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Api }
+            - { name: sonata.admin, manager_type: orm, group: API, label: API }
         public: true
 
     admin.request:
         class: App\Admin\RequestAdmin
         arguments: [~, App\Entity\Request, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Request }
+            - { name: sonata.admin, manager_type: orm, group: Log, label: Traces }
         public: true
 
-    admin.category:
-        class: App\Admin\CategoryAdmin
-        arguments: [~, App\Entity\Category, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Category }
-        public: true
-
+    
     admin.partner:
         class: App\Admin\PartnerAdmin
         arguments: [~, App\Entity\Partner, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Partner }
+            - { name: sonata.admin, manager_type: orm, group: Admininstration, label: Nos Partenaires }
         public: true
 
     admin.technology:
         class: App\Admin\TechnologyAdmin
         arguments: [~, App\Entity\Technology, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Technology }
+            - { name: sonata.admin, manager_type: orm, group: Admininstration, label: Technologie }
         public: true
 
     admin.parameter:
         class: App\Admin\ParameterAdmin
         arguments: [~, App\Entity\Parameter, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Parameter }
+            - { name: sonata.admin, manager_type: orm, group: API, label: Paramètres }
         public: true

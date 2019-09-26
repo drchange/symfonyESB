@@ -13,10 +13,12 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Manager\ApiManager;
 use App\Manager\RequestManager;
 use App\Service\ParameterService;
+use App\Service\NotificationService;
 use App\Entity\Request as Requete;
 use App\Exception\EsbException;
 use \DateTime;
 use App\Model\ResponseRequest;
+use \Exception;
 
 class EsbController extends AbstractController
 {
@@ -55,15 +57,21 @@ class EsbController extends AbstractController
                             ApiManager $apiMng,
                             RequestManager $requestMng,
                             ParameterService $paramService,
+                            NotificationService $notif,
                             string $apiref)
     {
-
+        $host = $request->getHost();
+        $scheme = $request->getScheme();
+        $origin = "$scheme://$host";
+        $ipadrress = $request->getClientIp();
         try{
             $requete = new Requete();
             $api = $apiMng->findOneByRef($apiref);
-            if($api == null){
+            if($api == null || !$api->getStatus()){
                 throw new EsbException(404, "API not Found");
             }
+            $requete->setOrigin($origin);
+            $requete->setIporigin($ipadrress);
             $requete->setApi($api);
             $requete->setDate(new DateTime());
             $requete->setStatus(false);
@@ -71,10 +79,16 @@ class EsbController extends AbstractController
 
             /* Get In parameters */
             $response = $paramService->getParams($api, $request, "in");
+            if(!isset($response->{$api->getDecisionParam()})){
+                $notif->failedRequest($requete);
+                throw new EsbException(500, "FAILED");
+            }
             $result = new ResponseRequest(500, $response->{$api->getMessageParam()});
+            $result->setContent($response);
             $decision = $response->{$api->getDecisionParam()};
             $success = explode(",", $api->getValueSuccess());
             $info = explode(",", $api->getValueInfo());
+            $failed = explode(",", $api->getValueFailed());
             if(in_array($decision, $success)){
                 $requete->setStatus(true);
                 $requete = $requestMng->save($requete);
@@ -83,9 +97,14 @@ class EsbController extends AbstractController
                 $requete->setStatus(true);
                 $requete = $requestMng->save($requete);
                 $result->setCode(201);
+            }else if(!in_array($decision, $failed)){
+                $notif->failedRequest($requete);
             }
         }catch(EsbException $e){
             $result = new ResponseRequest($e->getCode(), $e->getMessage());
+        }catch(Exception $e){
+            $notif->failedRequest($requete);
+            $result = new ResponseRequest(500, "FAILED");
         }
         
 

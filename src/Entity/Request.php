@@ -31,6 +31,16 @@ class Request
      */
     private $api;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $origin;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $iporigin;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +78,30 @@ class Request
     public function setApi(?Api $api): self
     {
         $this->api = $api;
+
+        return $this;
+    }
+
+    public function getOrigin(): ?string
+    {
+        return $this->origin;
+    }
+
+    public function setOrigin(?string $origin): self
+    {
+        $this->origin = $origin;
+
+        return $this;
+    }
+
+    public function getIporigin(): ?string
+    {
+        return $this->iporigin;
+    }
+
+    public function setIporigin(?string $iporigin): self
+    {
+        $this->iporigin = $iporigin;
 
         return $this;
     }
