@@ -8,6 +8,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use Swagger\Annotations as SWG;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Manager\ApiManager;
@@ -23,7 +24,10 @@ use \Exception;
 class EsbController extends AbstractController
 {
     /**
-     * @Rest\Post("/api/{apiref}/run")
+     * 
+     * @Route("/{url}", name="remove_trailing_slash",
+     *     requirements={"url" = ".*\/$"}, methods={"GET","POST","PUT"})
+     *
      * @Rest\View
      * @SWG\Response(
      *     response=200,
@@ -54,11 +58,12 @@ class EsbController extends AbstractController
      *
      */
     public function runPost(Request $request,
+                            ParamFetcherInterface $paramfetcher,
                             ApiManager $apiMng,
                             RequestManager $requestMng,
                             ParameterService $paramService,
                             NotificationService $notif,
-                            string $apiref)
+                            string $url)
     {
         $host = $request->getHost();
         $scheme = $request->getScheme();
@@ -66,9 +71,14 @@ class EsbController extends AbstractController
         $ipadrress = $request->getClientIp();
         try{
             $requete = new Requete();
-            $api = $apiMng->findOneByRef($apiref);
-            if($api == null || !$api->getStatus()){
+            $criteria = array('ref' => $url);
+            $api = $apiMng->findOneBy($criteria);
+            if($api == null){
                 throw new EsbException(404, "API not Found");
+            }elseif(!$api->getStatus()){
+                throw new EsbException(501, "API unvailable for this moment");
+            }elseif($api->getMethodin() != $request->getMethod()){
+                throw new EsbException(305, "Method Not Allowed");
             }
             $requete->setOrigin($origin);
             $requete->setIporigin($ipadrress);
@@ -77,7 +87,6 @@ class EsbController extends AbstractController
             $requete->setStatus(false);
             $requete = $requestMng->save($requete);
 
-            /* Get In parameters */
             $response = $paramService->getParams($api, $request, "in");
             if(!isset($response->{$api->getDecisionParam()})){
                 $notif->failedRequest($requete);
@@ -104,7 +113,7 @@ class EsbController extends AbstractController
             $result = new ResponseRequest($e->getCode(), $e->getMessage());
         }catch(Exception $e){
             $notif->failedRequest($requete);
-            $result = new ResponseRequest(500, "FAILED");
+            $result = new ResponseRequest(500, $e->getMessage());
         }
         
 

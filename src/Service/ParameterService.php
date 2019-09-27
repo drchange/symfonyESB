@@ -34,6 +34,9 @@ class ParameterService
         foreach ($parameters as $param) {
             if($param->getIsStatic()){
                 $params[$param->getOutName()] = $param->getValueStatic();
+            }elseif($param->getInUrl()){
+                $tmp = explode("/", $api->getRef());
+                $params[$param->getOutName()] = $tmp[$param->getLevelinUrl() - 1];
             }elseif(true){
                 $params[$param->getOutName()] = $request->get($param->getInName());
             }    

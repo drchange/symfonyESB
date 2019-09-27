@@ -51,6 +51,16 @@ class Parameter
      */
     private $api;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $inUrl;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $levelinUrl;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +146,30 @@ class Parameter
     public function setApi(?Api $api): self
     {
         $this->api = $api;
+
+        return $this;
+    }
+
+    public function getInUrl(): ?bool
+    {
+        return $this->inUrl;
+    }
+
+    public function setInUrl(bool $inUrl): self
+    {
+        $this->inUrl = $inUrl;
+
+        return $this;
+    }
+
+    public function getLevelinUrl(): ?int
+    {
+        return $this->levelinUrl;
+    }
+
+    public function setLevelinUrl(?int $levelinUrl): self
+    {
+        $this->levelinUrl = $levelinUrl;
 
         return $this;
     }

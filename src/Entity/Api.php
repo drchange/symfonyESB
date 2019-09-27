@@ -109,6 +109,11 @@ class Api
      */
     private $xmltagversion;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $methodin;
+
     public function __construct()
     {
         $this->parameters = new ArrayCollection();
@@ -370,6 +375,18 @@ class Api
     public function setXmltagversion(?string $xmltagversion): self
     {
         $this->xmltagversion = $xmltagversion;
+
+        return $this;
+    }
+
+    public function getMethodin(): ?string
+    {
+        return $this->methodin;
+    }
+
+    public function setMethodin(string $methodin): self
+    {
+        $this->methodin = $methodin;
 
         return $this;
     }

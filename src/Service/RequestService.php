@@ -23,6 +23,10 @@ class RequestService
         $this->sendRequest = $sendRequest;
     }
 
+    public function run(Request $request){
+        var_dump("Cool"); die;
+    }
+
     public function initiate(Api $api) : Request
     {
         $request = new Request();

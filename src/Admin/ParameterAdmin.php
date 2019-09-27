@@ -60,6 +60,8 @@ final class ParameterAdmin extends AbstractAdmin
                     ->add('outName', null, ['label'=> 'Nom en sortie'])
                     ->add('isStatic', null, ['label'=> 'Statique'])
                     ->add('valueStatic', null, ['label'=> 'Valeur statique'])
+                    ->add('inUrl', null, ['label'=> 'Url'])
+                    ->add('levelinUrl', null, ['label'=> 'Level'])
                     ->add('flow', ChoiceType::class, ['label'=>'Type',
                         'choices' => [
                             'entrée' => 'in',
@@ -86,4 +88,6 @@ final class ParameterAdmin extends AbstractAdmin
             ->add('flow')
             ;
     }
+
+    
 }

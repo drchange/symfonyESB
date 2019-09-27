@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class AppController extends AbstractController
 {
     /**
-     * @Route("/app", name="app")
+     * @Route("/")
      */
     public function index()
     {

@@ -44,5 +44,11 @@ class ApiManager
         return $api;
     }
 
+    public function findOneBy($criteria) : ?Api
+    {
+        $api = $this->entityManager->getRepository(Api::class)->findOneBy($criteria);
+        return $api;
+    }
+
     
 }
