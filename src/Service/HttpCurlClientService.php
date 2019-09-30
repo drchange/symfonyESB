@@ -10,12 +10,12 @@ use Symfony\Component\HttpClient\CurlHttpClient;
 class HttpCurlClientService
 {
 
-    public function push(string $url, array $data, string $method = 'GET') : string
+    public function push(string $url, $data, string $method = 'GET', $type = 'json') : string
     {
-        return $this->{"send$method"}($url, $data);
+        return $this->{"send$method"}($url, $data, $type);
     }
     
-    public function sendGET(string $url, array $data) : string
+    public function sendGET(string $url, $data) : string
     {
         $httpClient = new CurlHttpClient();
         $response = $httpClient->request('GET', $url, [

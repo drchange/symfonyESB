@@ -55,17 +55,19 @@ final class ParameterAdmin extends AbstractAdmin
         $formMapper
             ->tab('Général')
                 ->with('', ['class' => 'col-md-12'])          
-                    ->add('api', ModelType::class,['property'=>'ref', 'label' => 'WebService', 'required' => true, 'disabled' => true])
+                    ->add('api', ModelType::class,['property'=>'ref', 'label' => 'Web Service', 'required' => true, 'disabled' => true])
                     ->add('inName', null, ['label'=> 'Nom en entré'])
                     ->add('outName', null, ['label'=> 'Nom en sortie'])
                     ->add('isStatic', null, ['label'=> 'Statique'])
                     ->add('valueStatic', null, ['label'=> 'Valeur statique'])
                     ->add('inUrl', null, ['label'=> 'Url'])
                     ->add('levelinUrl', null, ['label'=> 'Level'])
+                    ->add('required', null, ['label'=> 'Requis'])
+                    ->add('regex', null, ['label'=> 'Regex'])
                     ->add('flow', ChoiceType::class, ['label'=>'Type',
                         'choices' => [
-                            'entrée' => 'in',
-                            'sortie' => 'out'
+                            'in' => 'in',
+                            'out' => 'out'
                     ]])
                 ->end()
             ->end()

@@ -27,7 +27,7 @@ class Parameter
     private $outName;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isStatic;
 
@@ -47,12 +47,12 @@ class Parameter
     private $flow;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Api", inversedBy="parameters")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Api", inversedBy="parameters", cascade={"persist"})
      */
     private $api;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $inUrl;
 
@@ -60,6 +60,16 @@ class Parameter
      * @ORM\Column(type="integer", nullable=true)
      */
     private $levelinUrl;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $required;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $regex;
 
     public function getId(): ?int
     {
@@ -170,6 +180,30 @@ class Parameter
     public function setLevelinUrl(?int $levelinUrl): self
     {
         $this->levelinUrl = $levelinUrl;
+
+        return $this;
+    }
+
+    public function getRequired(): ?bool
+    {
+        return $this->required;
+    }
+
+    public function setRequired(bool $required): self
+    {
+        $this->required = $required;
+
+        return $this;
+    }
+
+    public function getRegex(): ?string
+    {
+        return $this->regex;
+    }
+
+    public function setRegex(?string $regex): self
+    {
+        $this->regex = $regex;
 
         return $this;
     }

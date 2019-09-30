@@ -37,16 +37,19 @@ class SendRequestService
                         break;
 
                     case 'xml':
-                        $xml = trim($api->getSoapTemplate());
-                        $parameters = $api->getParameters();
-                        foreach ($parameters as $param) {
-                            ${$param->getOutName()} = $params[$param->getOutName()];
-                            $search = '$' . $param->getOutName();
-                            $replace =  ${$param->getOutName()};
-                            $xml = str_replace($search, $replace, $xml);
+                        $xml = null;
+                        if($api->getSoapTemplate() != null){
+                            $xml = trim($api->getSoapTemplate());
+                            $parameters = $api->getParameters();
+                            foreach ($params as $param) {
+                                ${$param->getOutName()} = $params[$param->getOutName()];
+                                $search = '$' . $param->getOutName();
+                                $replace =  ${$param->getOutName()};
+                                $xml = str_replace($search, $replace, $xml);
+                            }
                         }
-                        $response = $this->http->sendPOST($api->getEndpoint(),$xml,'xml');
-                        //$response = $this->http->push($api->getEndpoint(),$params, $api->getMethod());
+ 
+                        $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
                         break;
                     
                     default:
@@ -64,7 +67,8 @@ class SendRequestService
                     $replace =  ${$param->getOutName()};
                     $xml = str_replace($search, $replace, $xml);
                 }
-                $response = $this->http->sendPOST($api->getEndpoint(),$xml,'xml');
+                //$response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
+
 
                 break;
             
@@ -72,8 +76,8 @@ class SendRequestService
                 # code...
                 break;
         }
-
-        $response = $this->responseService->normalize($response, $api->getBodyFormat(), $api->getXmltagversion());   
+        $response = $this->responseService->normalize($response, $api->getBodyFormat(), $api->getXmltagversion());  
+        
         return $response;
     }
     

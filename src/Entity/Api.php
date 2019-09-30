@@ -70,7 +70,7 @@ class Api
     private $techno;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Parameter", mappedBy="api")
+     * @ORM\OneToMany(targetEntity="App\Entity\Parameter", mappedBy="api" ,cascade={"persist"})
      */
     private $parameters;
 

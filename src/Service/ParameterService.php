@@ -3,9 +3,10 @@
 namespace App\Service;
 
 use App\Entity\Api;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Manager\ParameterManager;
 use App\Service\SendRequestService;
+use App\Exception\EsbException;
+use \StdClass;
 
 
 
@@ -39,9 +40,26 @@ class ParameterService
                 $params[$param->getOutName()] = $tmp[$param->getLevelinUrl() - 1];
             }elseif(true){
                 $params[$param->getOutName()] = $request->get($param->getInName());
-            }    
+            }
+            
+            if($param->getRequired())
+            {
+                if(!isset($params[$param->getOutName()]) )
+                {
+                    throw new EsbException(401, "Parameter ". $param->getInName(). " is required");
+                }elseif(!preg_match($param->getRegex(), $params[$param->getOutName()])){
+                    throw new EsbException(402, "Wrong Parameter ". $param->getInName());
+                }
+            }
         }
-        return $this->sendRequest->run($api, $params);
+        $response = $this->sendRequest->run($api, $params);
+        $criteria = array('flow' => 'out', 'api' => $api);
+        $parameters = $this->paramManager->findBy($criteria);
+        $result = new StdClass();
+        foreach ($parameters as $param) {
+            $result->{$param->getInName()} = $response->{$param->getOutName()} ;
+        }
+        return $result;
     }
     
 }

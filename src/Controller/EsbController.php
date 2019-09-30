@@ -21,6 +21,8 @@ use \DateTime;
 use App\Model\ResponseRequest;
 use \Exception;
 
+use function GuzzleHttp\json_decode;
+
 class EsbController extends AbstractController
 {
     /**
@@ -69,6 +71,7 @@ class EsbController extends AbstractController
         $scheme = $request->getScheme();
         $origin = "$scheme://$host";
         $ipadrress = $request->getClientIp();
+        $response = null;
         try{
             $requete = new Requete();
             $criteria = array('ref' => $url);
@@ -111,14 +114,13 @@ class EsbController extends AbstractController
             }
         }catch(EsbException $e){
             $result = new ResponseRequest($e->getCode(), $e->getMessage());
-        }catch(Exception $e){
+        }/*catch(Exception $e){
             $notif->failedRequest($requete);
             $result = new ResponseRequest(500, $e->getMessage());
-        }
+        }*/
         
-
-        $data = $this->get('serializer')->serialize($result, 'json');
-        $response = new Response($data);
+        $response = \json_encode($response);
+        $response = new Response($response);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
          
