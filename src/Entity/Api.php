@@ -20,11 +20,6 @@ class Api
     private $id;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $headers = [];
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $endpoint;
@@ -104,18 +99,6 @@ class Api
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getHeaders(): ?array
-    {
-        return $this->headers;
-    }
-
-    public function setHeaders(?array $headers): self
-    {
-        $this->headers = $headers;
-
-        return $this;
     }
 
     public function getEndpoint(): ?string
