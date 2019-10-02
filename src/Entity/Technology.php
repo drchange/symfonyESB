@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TechnologyRepository")
+ * @ORM\Table(name="tech")
  */
 class Technology
 {
@@ -19,7 +20,7 @@ class Technology
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
      */
     private $name;
 
