@@ -96,9 +96,6 @@ final class ApiAdmin extends AbstractAdmin
                     
                     ->add('decisionParam', null, ['label'=>'Paramètre de décision'])
                     ->add('valueSuccess', null, ['label'=>'Valeurs de success'])
-                    ->add('valueInfo', null, ['label'=>'Valeurs informatives'])
-                    ->add('valueFailed', null, ['label'=>'Valeurs échec'])
-                    ->add('messageParam', null, ['label'=>'Paramètre de méssage'])
                 ->end()
             ->end()
             

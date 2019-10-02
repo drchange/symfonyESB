@@ -95,29 +95,19 @@ class EsbController extends AbstractController
                 $notif->failedRequest($requete);
                 throw new EsbException(500, "FAILED");
             }
-            $result = new ResponseRequest(500, $response->{$api->getMessageParam()});
+            //$result = new ResponseRequest(500, $response->{$api->getMessageParam()});
             $result->setContent($response);
             $decision = $response->{$api->getDecisionParam()};
             $success = explode(",", $api->getValueSuccess());
-            $info = explode(",", $api->getValueInfo());
-            $failed = explode(",", $api->getValueFailed());
             if(in_array($decision, $success)){
                 $requete->setStatus(true);
                 $requete = $requestMng->save($requete);
-                $result->setCode(200);
-            }else if(in_array($decision, $info)){
-                $requete->setStatus(true);
-                $requete = $requestMng->save($requete);
-                $result->setCode(201);
-            }else if(!in_array($decision, $failed)){
+            }elseif(true){
                 $notif->failedRequest($requete);
             }
         }catch(EsbException $e){
             $result = new ResponseRequest($e->getCode(), $e->getMessage());
-        }/*catch(Exception $e){
-            $notif->failedRequest($requete);
-            $result = new ResponseRequest(500, $e->getMessage());
-        }*/
+        }
         
         $response = \json_encode($response);
         $response = new Response($response);

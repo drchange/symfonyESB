@@ -44,12 +44,6 @@ class Api
      */
     private $decisionParam;
 
-   
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
-    private $messageParam;
-
     /**
      * @ORM\Column(type="string", length=10)
      */
@@ -76,24 +70,9 @@ class Api
     private $parameters;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Request", mappedBy="api")
-     */
-    private $requests;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $valueSuccess;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $valueInfo;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $valueFailed;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -114,6 +93,7 @@ class Api
      * @ORM\Column(type="string", length=10)
      */
     private $methodin;
+
 
     public function __construct()
     {
@@ -186,18 +166,7 @@ class Api
         return $this;
     }
 
-    public function getMessageParam(): ?string
-    {
-        return $this->messageParam;
-    }
-
-    public function setMessageParam(?string $messageParam): self
-    {
-        $this->messageParam = $messageParam;
-
-        return $this;
-    }
-
+   
     public function getBodyFormat(): ?string
     {
         return $this->bodyFormat;
@@ -277,37 +246,6 @@ class Api
         return $this;
     }
 
-    /**
-     * @return Collection|Request[]
-     */
-    public function getRequests(): Collection
-    {
-        return $this->requests;
-    }
-
-    public function addRequest(Request $request): self
-    {
-        if (!$this->requests->contains($request)) {
-            $this->requests[] = $request;
-            $request->setApi($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRequest(Request $request): self
-    {
-        if ($this->requests->contains($request)) {
-            $this->requests->removeElement($request);
-            // set the owning side to null (unless already changed)
-            if ($request->getApi() === $this) {
-                $request->setApi(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getValueSuccess(): ?string
     {
         return $this->valueSuccess;
@@ -320,30 +258,7 @@ class Api
         return $this;
     }
 
-    public function getValueInfo(): ?string
-    {
-        return $this->valueInfo;
-    }
-
-    public function setValueInfo(?string $valueInfo): self
-    {
-        $this->valueInfo = $valueInfo;
-
-        return $this;
-    }
-
-    public function getValueFailed(): ?string
-    {
-        return $this->valueFailed;
-    }
-
-    public function setValueFailed(?string $valueFailed): self
-    {
-        $this->valueFailed = $valueFailed;
-
-        return $this;
-    }
-
+   
     public function getRef(): ?string
     {
         return $this->ref;
