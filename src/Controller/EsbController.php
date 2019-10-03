@@ -96,7 +96,7 @@ class EsbController extends AbstractController
                 throw new EsbException(500, "FAILED");
             }
             //$result = new ResponseRequest(500, $response->{$api->getMessageParam()});
-            $result->setContent($response);
+            //$result->setContent($response);
             $decision = $response->{$api->getDecisionParam()};
             $success = explode(",", $api->getValueSuccess());
             if(in_array($decision, $success)){
@@ -107,6 +107,10 @@ class EsbController extends AbstractController
             }
         }catch(EsbException $e){
             $result = new ResponseRequest($e->getCode(), $e->getMessage());
+            $data = $this->get('serializer')->serialize($result, 'json');
+            $response = new Response($data);
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
         }
         
         $response = \json_encode($response);
