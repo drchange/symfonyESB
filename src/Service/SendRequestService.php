@@ -38,18 +38,24 @@ class SendRequestService
 
                     case 'xml':
                         $xml = null;
-                        if($api->getSoapTemplate() != null){
-                            $xml = trim($api->getSoapTemplate());
-                            $parameters = $api->getParameters();
-                            foreach ($params as $param) {
-                                ${$param->getOutName()} = $params[$param->getOutName()];
-                                $search = '$' . $param->getOutName();
-                                $replace =  ${$param->getOutName()};
-                                $xml = str_replace($search, $replace, $xml);
+                        if($api->getMethod() == "POST")
+                        {
+                            if($api->getSoapTemplate() != null){
+                                $xml = trim($api->getSoapTemplate());
+                                $parameters = $api->getParameters();
+                                foreach ($params as $param) {
+                                    ${$param->getOutName()} = $params[$param->getOutName()];
+                                    $search = '$' . $param->getOutName();
+                                    $replace =  ${$param->getOutName()};
+                                    $xml = str_replace($search, $replace, $xml);
+                                }
                             }
+     
+                            $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
+                        }elseif(true){
+                            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod());
                         }
- 
-                        $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
+                        
                         break;
                     
                     default:
