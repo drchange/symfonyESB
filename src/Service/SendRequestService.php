@@ -29,17 +29,19 @@ class SendRequestService
     public function run(Api $api, array $params)
     {
         $techno = $api->getTechno()->getName();
-        switch ($techno) {
-            case 'REST':
-                switch ($api->getBodyFormat()) {
-                    case 'json':
-                        $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod());
-                        break;
-
-                    case 'xml':
-                        $xml = null;
-                        if($api->getMethod() == "POST")
-                        {
+        if($api->getMethod() == "GET")
+        {
+            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod());
+        }elseif(true){
+            switch ($techno) {
+                case 'REST':
+                    switch ($api->getBodyFormat()) {
+                        case 'json':
+                            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod());
+                            break;
+    
+                        case 'xml':
+                            $xml = null;
                             if($api->getSoapTemplate() != null){
                                 $xml = trim($api->getSoapTemplate());
                                 $parameters = $api->getParameters();
@@ -50,38 +52,36 @@ class SendRequestService
                                     $xml = str_replace($search, $replace, $xml);
                                 }
                             }
-     
+        
                             $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
-                        }elseif(true){
-                            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod());
-                        }
+                            break;
                         
-                        break;
-                    
-                    default:
-                        # code...
-                        break;
-                }
-                break;
-
-            case 'SOAP':
-                $xml = trim($api->getSoapTemplate());
-                $parameters = $api->getParameters();
-                foreach ($parameters as $param) {
-                    ${$param->getOutName()} = $params[$param->getOutName()];
-                    $search = '$' . $param->getOutName();
-                    $replace =  ${$param->getOutName()};
-                    $xml = str_replace($search, $replace, $xml);
-                }
-                //$response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
-
-
-                break;
-            
-            default:
-                # code...
-                break;
+                        default:
+                            # code...
+                            break;
+                    }
+                    break;
+    
+                case 'SOAP':
+                    $xml = trim($api->getSoapTemplate());
+                    $parameters = $api->getParameters();
+                    foreach ($parameters as $param) {
+                        ${$param->getOutName()} = $params[$param->getOutName()];
+                        $search = '$' . $param->getOutName();
+                        $replace =  ${$param->getOutName()};
+                        $xml = str_replace($search, $replace, $xml);
+                    }
+                    //$response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
+    
+    
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
         }
+        
         $response = $this->responseService->normalize($response, $api->getBodyFormat(), $api->getXmltagversion());  
         
         return $response;
