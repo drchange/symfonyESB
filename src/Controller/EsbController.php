@@ -91,20 +91,22 @@ class EsbController extends AbstractController
             $requete = $requestMng->save($requete);
 
             $response = $paramService->getParams($api, $request, "in");
-            if(!isset($response->{$api->getDecisionParam()})){
+            $requete->setStatus(true);
+            $requete = $requestMng->save($requete);
+            /*if(!isset($response->{$api->getDecisionParam()})){
                 $notif->failedRequest($requete);
                 throw new EsbException(500, "FAILED");
-            }
+            }*/
             //$result = new ResponseRequest(500, $response->{$api->getMessageParam()});
             //$result->setContent($response);
-            $decision = $response->{$api->getDecisionParam()};
+            /*$decision = $response->{$api->getDecisionParam()};
             $success = explode(",", $api->getValueSuccess());
             if(in_array($decision, $success)){
                 $requete->setStatus(true);
                 $requete = $requestMng->save($requete);
             }elseif(true){
                 $notif->failedRequest($requete);
-            }
+            }*/
         }catch(EsbException $e){
             $result = new ResponseRequest($e->getCode(), $e->getMessage());
             $data = $this->get('serializer')->serialize($result, 'json');
@@ -113,7 +115,7 @@ class EsbController extends AbstractController
             return $response;
         }
         
-        $response = \json_encode($response);
+        $response = json_encode($response);
         $response = new Response($response);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
