@@ -107,6 +107,10 @@ class EsbController extends AbstractController
             }elseif(true){
                 $notif->failedRequest($requete);
             }*/
+            $response = json_encode($response);
+            $response = new Response($response);
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
         }catch(EsbException $e){
             $result = new ResponseRequest($e->getCode(), $e->getMessage());
             $data = $this->get('serializer')->serialize($result, 'json');
@@ -115,10 +119,7 @@ class EsbController extends AbstractController
             return $response;
         }
         
-        $response = json_encode($response);
-        $response = new Response($response);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        
          
     }
 
