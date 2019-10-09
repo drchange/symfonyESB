@@ -57,9 +57,8 @@ class ParameterService
         $parameters = $this->paramManager->findBy($criteria);
         $result = new StdClass();
         foreach ($parameters as $param) {
-            if(isset($result->{$param->getOutName()})){
-                $result->{$param->getInName()} = $response->{$param->getOutName()} ;
-            }
+            $result->{$param->getInName()} = $response->{$param->getOutName()} ;
+            
         }
         return $result;
     }
