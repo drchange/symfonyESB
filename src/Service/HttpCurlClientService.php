@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use Symfony\Component\HttpClient\CurlHttpClient;
-
+use \Exception;
 
 
 /* @class service curl http service */
@@ -21,8 +21,13 @@ class HttpCurlClientService
         $response = $httpClient->request('GET', $url, [
             'query' => $data
         ]);
-
-        return $response->getContent();
+        
+        try{
+            return $response->getContent();
+        }catch(Exception $e){
+            return $response;
+        }
+        
     }
     
     // type = "json/xml/raw data"
