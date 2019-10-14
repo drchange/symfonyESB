@@ -28,4 +28,5 @@ return [
     Sonata\UserBundle\SonataUserBundle::class => ['all' => true],
     Raindrop\SonataThemeBundle\RaindropSonataThemeBundle::class => ['all' => true],
     App\Application\Sonata\UserBundle\ApplicationSonataUserBundle::class => ['all' => true],
+    Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
 ];
