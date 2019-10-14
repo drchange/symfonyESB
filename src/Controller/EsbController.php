@@ -25,6 +25,16 @@ use function GuzzleHttp\json_decode;
 
 class EsbController extends AbstractController
 {
+
+    /**
+    * The construct method
+    */
+   public function __construct()
+   {
+       header("Access-Control-Allow-Origin: *");
+   }
+
+   
     /**
      * 
      * @Route("/{url}", name="remove_trailing_slash",
