@@ -8,7 +8,7 @@ use \Exception;
 /* @class service curl http service */
 class HttpCurlClientService
 {
-    public function push(string $url, $data, string $method = 'GET', $type = 'json', array $params=[], array $headers = []) : string
+    public function push(string $url, $data, string $method = 'GET', $type = 'json', array $params=[], array $headers = null) : string
     {
         if (is_string ($data)) {
             $data = str_replace("\n", "", $data);
@@ -20,7 +20,7 @@ class HttpCurlClientService
         return $this->{"send$method"}($url, $data, $type, $params, $headers);
     }
 
-    public function sendGET(string $url, $data, string $type = 'json', array $params=[], array $headers = []) : string
+    public function sendGET(string $url, $data, string $type = 'json', array $params=[], array $headers = null) : string
     {
         $httpClient = new CurlHttpClient();
         $response = $httpClient->request('GET', $url, [
@@ -36,7 +36,7 @@ class HttpCurlClientService
     }
 
     // type = "json/xml/raw data"
-    public function sendPOST(string $url, $data, string $type = 'json', array $params=[], array $headers = []) : string
+    public function sendPOST(string $url, $data, string $type = 'json', array $params=[], array $headers = null) : string
     {
         $httpClient = new CurlHttpClient();
         $response = '';
@@ -47,6 +47,13 @@ class HttpCurlClientService
                 'headers' => $headers
             ]);
         } elseif (true) {
+            $headers = array(
+                "Content-type: text/xml;charset=\"utf-8\"",
+                "Accept: text/xml",
+                "Cache-Control: no-cache",
+                "Pragma: no-cache",
+                "Content-length: " . strlen($data)
+            );
             $bodyparam = $dataparam = 'body';
             $paramsInput =  [
                 $bodyparam => $type,
@@ -54,7 +61,7 @@ class HttpCurlClientService
                 'headers' => $headers,
             ];
             $paramData = $paramsInput + $params;
-            dump($paramData, $data);die();
+            //dump($paramData, $data);die();
             $response = $httpClient->request('POST', $url, $paramData);
         }
 
