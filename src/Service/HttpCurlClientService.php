@@ -16,7 +16,7 @@ class HttpCurlClientService
             $data = str_replace("\t", "", $data);
         }
 
-        return $this->{"send$method"}($url, $data, $type, $headers);
+        return $this->{"send$method"}($url, $data, $type, $params, $headers);
     }
 
     public function sendGET(string $url, $data, string $type = 'json', array $params=[], array $headers = []) : string
