@@ -52,11 +52,13 @@ class HttpCurlClientService
         } elseif (true) {
             
             $bodyparam = $dataparam = 'body';
-            dump($url,  $headers, $bodyparam, $data);die();
+
             $response = $httpClient->request('POST', $url, [
                 $bodyparam => $type,
                 $dataparam => $data,
                 'headers' => $headers,
+                'timeout' => 150,
+                'connecttimeout' => 120,
             ]);
         }
 
