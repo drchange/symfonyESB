@@ -12,10 +12,6 @@ class HttpCurlClientService
 
     public function push(string $url, $data, string $method = 'GET', $type = 'json', array $params=[], array $headers = []) : string
     {
-        $data = str_replace("\n", "", $data);
-        $data = str_replace("\r", "", $data);
-        $data = str_replace("\t", "", $data);
-
         return $this->{"send$method"}($url, $data, $type, $headers);
     }
     
@@ -46,6 +42,9 @@ class HttpCurlClientService
                 'headers' => $headers
             ]);
         } elseif (true) {
+            $data = str_replace("\n", "", $data);
+            $data = str_replace("\r", "", $data);
+            $data = str_replace("\t", "", $data);
             $bodyparam = $dataparam = 'body';
             $response = $httpClient->request('POST', $url, [
                 $bodyparam => $type,
