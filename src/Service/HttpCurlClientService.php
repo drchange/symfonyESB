@@ -31,21 +31,11 @@ class HttpCurlClientService
     }
     
     // type = "json/xml/raw data"
-    public function sendPOST(string $url, $data, $type = 'json', $headers = null) : string
+    public function sendPOST(string $url, $data, $type = 'json', $headers = []) : string
     {
         $httpClient = new CurlHttpClient();
         $response = "";
-        $ch = curl_init();
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 150);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_exec($ch);
+
         
         if ($type === 'json') {
             $response = $httpClient->request('POST', $url, [
@@ -53,7 +43,14 @@ class HttpCurlClientService
                 'headers' => $headers
             ]);
         } elseif (true) {
-            
+            $bodyparam = $dataparam = 'body';
+            $response = $httpClient->request('POST', $url, [
+                $bodyparam => $type,
+                $dataparam => $data,
+                'headers' => [],
+                'verify_host' => false,
+                'verify_peer' => false,
+            ]);
         }
         return $response->getContent();
     }
