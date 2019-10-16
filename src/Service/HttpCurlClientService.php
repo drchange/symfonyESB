@@ -35,15 +35,7 @@ class HttpCurlClientService
     {
         $httpClient = new CurlHttpClient();
         $response = "";
-
-        
-        if ($type === 'json') {
-            $response = $httpClient->request('POST', $url, [
-                $type => $data,
-                'headers' => $headers
-            ]);
-        } elseif (true) {
-            $ch = curl_init();
+        $ch = curl_init();
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
@@ -53,7 +45,15 @@ class HttpCurlClientService
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            $response = curl_exec($ch);
+            curl_exec($ch);
+        
+        if ($type === 'json') {
+            $response = $httpClient->request('POST', $url, [
+                $type => $data,
+                'headers' => $headers
+            ]);
+        } elseif (true) {
+            
         }
         return $response->getContent();
     }
