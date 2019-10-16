@@ -10,7 +10,7 @@ use \Exception;
 class HttpCurlClientService
 {
 
-    public function push(string $url, array $data, string $method = 'GET', $type = 'json', array $params=[], array $headers = []) : string
+    public function push(string $url, $data, string $method = 'GET', $type = 'json', array $params=[], array $headers = []) : string
     {
         $data = str_replace("\n", "", $data);
         $data = str_replace("\r", "", $data);
@@ -19,7 +19,7 @@ class HttpCurlClientService
         return $this->{"send$method"}($url, $data, $type, $headers);
     }
     
-    public function sendGET(string $url, array $data, string $type = 'json', array $params=[], array $headers = []) : string
+    public function sendGET(string $url, $data, string $type = 'json', array $params=[], array $headers = []) : string
     {
         $httpClient = new CurlHttpClient();
         $response = $httpClient->request('GET', $url, [
@@ -35,7 +35,7 @@ class HttpCurlClientService
     }
     
     // type = "json/xml/raw data"
-    public function sendPOST(string $url, array $data, string $type = 'json', array $params=[], array $headers = []) : string
+    public function sendPOST(string $url, $data, string $type = 'json', array $params=[], array $headers = []) : string
     {
         $httpClient = new CurlHttpClient();
         $response = "";
