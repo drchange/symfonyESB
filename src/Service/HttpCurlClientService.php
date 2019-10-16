@@ -42,6 +42,11 @@ class HttpCurlClientService
                 'headers' => $headers
             ]);
         } elseif (true) {
+            
+            $data = str_replace("\n", "", $data);
+            $data = str_replace("\t", "", $data);
+            $data = str_replace("\r", "", $data);
+
             $header = array(
                 "Content-type: text/xml;charset=\"utf-8\"",
                 "Accept: text/xml",
