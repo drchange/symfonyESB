@@ -48,6 +48,7 @@ class HttpCurlClientService
                 $bodyparam => $type,
                 $dataparam => $data,
                 'headers' => $headers,
+                'verify' => false
             ]);
         }
         return $response->getContent();
