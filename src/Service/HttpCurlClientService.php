@@ -47,7 +47,9 @@ class HttpCurlClientService
             $response = $httpClient->request('POST', $url, [
                 $bodyparam => $type,
                 $dataparam => $data,
-                'headers' => $headers
+                'headers' => $headers,
+                'verify_host' => false,
+                'verify_peer' => false,
             ]);
         }
         return $response->getContent();
