@@ -71,6 +71,7 @@ class SendRequestService
                         $replace =  ${$param->getOutName()};
                         $xml = str_replace($search, $replace, $xml);
                     }
+                    dump($xml);die();
                     $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
     
     
