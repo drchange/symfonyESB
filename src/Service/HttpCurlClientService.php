@@ -54,6 +54,7 @@ class HttpCurlClientService
                 'headers' => $headers,
             ];
             $paramData = array_merge($paramsInput, $params);
+            dump($paramData, $data);die();
             $response = $httpClient->request('POST', $url, $paramData);
         }
 
