@@ -33,6 +33,13 @@ class HttpCurlClientService
     // type = "json/xml/raw data"
     public function sendPOST(string $url, $data, $type = 'json', $headers = null) : string
     {
+        $headers = array(
+            "Content-type: text/xml;charset=\"utf-8\"",
+            "Accept: text/xml",
+            "Cache-Control: no-cache",
+            "Pragma: no-cache",
+            "Content-length: " . strlen($data)
+        );
         $httpClient = new CurlHttpClient();
         $response = "";
 
