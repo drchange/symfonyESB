@@ -14,7 +14,7 @@ class HttpCurlClientService
             $data = str_replace("\n", "", $data);
             $data = str_replace("\r", "", $data);
             $data = str_replace("\t", "", $data);
-            $data = str_replace("20191016153600", "ff433006e6aa6d1409a923ccbbc67f3f", $data);
+            $data = str_replace("Huawei123", "ff433006e6aa6d1409a923ccbbc67f3f", $data);
         }
 
         return $this->{"send$method"}($url, $data, $type, $params, $headers);
