@@ -5,16 +5,20 @@ namespace App\Service;
 use Symfony\Component\HttpClient\CurlHttpClient;
 use \Exception;
 
-
 /* @class service curl http service */
 class HttpCurlClientService
 {
-
     public function push(string $url, $data, string $method = 'GET', $type = 'json', array $params=[], array $headers = []) : string
     {
+        if (is_string ($data)) {
+            $data = str_replace("\n", "", $data);
+            $data = str_replace("\r", "", $data);
+            $data = str_replace("\t", "", $data);
+        }
+
         return $this->{"send$method"}($url, $data, $type, $headers);
     }
-    
+
     public function sendGET(string $url, $data, string $type = 'json', array $params=[], array $headers = []) : string
     {
         $httpClient = new CurlHttpClient();
@@ -29,12 +33,12 @@ class HttpCurlClientService
         }
         
     }
-    
+
     // type = "json/xml/raw data"
     public function sendPOST(string $url, $data, string $type = 'json', array $params=[], array $headers = []) : string
     {
         $httpClient = new CurlHttpClient();
-        $response = "";
+        $response = '';
 
         if ($type === 'json') {
             $response = $httpClient->request('POST', $url, [
@@ -42,18 +46,16 @@ class HttpCurlClientService
                 'headers' => $headers
             ]);
         } elseif (true) {
-            $data = str_replace("\n", "", $data);
-            $data = str_replace("\r", "", $data);
-            $data = str_replace("\t", "", $data);
             $bodyparam = $dataparam = 'body';
-            $response = $httpClient->request('POST', $url, [
+            $paramsInput =  [
                 $bodyparam => $type,
                 $dataparam => $data,
                 'headers' => $headers,
-                'verify_host' => false,
-                'verify_peer' => false,
-            ]);
+            ];
+            $paramData = array_merge($paramsInput, $params);
+            $response = $httpClient->request('POST', $url, $paramData);
         }
+
         return $response->getContent();
     }
 }
