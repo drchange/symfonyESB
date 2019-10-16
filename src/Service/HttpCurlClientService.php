@@ -10,7 +10,7 @@ use \Exception;
 class HttpCurlClientService
 {
 
-    public function push(string $url, $data, string $method = 'GET', $type = 'json', $headers = null) : string
+    public function push(string $url, $data, string $method = 'GET', $type = 'json', $headers = []) : string
     {
         return $this->{"send$method"}($url, $data, $type, $headers);
     }
@@ -47,7 +47,7 @@ class HttpCurlClientService
             $response = $httpClient->request('POST', $url, [
                 $bodyparam => $type,
                 $dataparam => $data,
-                'headers' => [],
+                'headers' => $headers,
                 'verify_host' => false,
                 'verify_peer' => false,
             ]);

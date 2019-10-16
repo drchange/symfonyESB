@@ -71,14 +71,8 @@ class SendRequestService
                         $replace =  ${$param->getOutName()};
                         $xml = str_replace($search, $replace, $xml);
                     }
-                    $headers = array(
-                        "Content-type: text/xml;charset=\"utf-8\"",
-                        "Accept: text/xml",
-                        "Cache-Control: no-cache",
-                        "Pragma: no-cache",
-                        "Content-length: " . strlen($xml)
-                    );
-                    $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml', $headers);
+
+                    $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
     
                     break;
                 
