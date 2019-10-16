@@ -48,7 +48,7 @@ class HttpCurlClientService
                 $bodyparam => $type,
                 $dataparam => $data,
                 'headers' => $headers,
-                'verify' => false
+                'verify_peer' => false
             ]);
         }
         return $response->getContent();
