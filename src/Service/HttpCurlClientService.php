@@ -10,9 +10,9 @@ use \Exception;
 class HttpCurlClientService
 {
 
-    public function push(string $url, $data, string $method = 'GET', $type = 'json') : string
+    public function push(string $url, $data, string $method = 'GET', $type = 'json', $headers = null) : string
     {
-        return $this->{"send$method"}($url, $data, $type);
+        return $this->{"send$method"}($url, $data, $type, $headers);
     }
     
     public function sendGET(string $url, $data) : string
@@ -33,13 +33,6 @@ class HttpCurlClientService
     // type = "json/xml/raw data"
     public function sendPOST(string $url, $data, $type = 'json', $headers = null) : string
     {
-        $headers = array(
-            "Content-type: text/xml;charset=\"utf-8\"",
-            "Accept: text/xml",
-            "Cache-Control: no-cache",
-            "Pragma: no-cache",
-            "Content-length: " . strlen($data)
-        );
         $httpClient = new CurlHttpClient();
         $response = "";
 
@@ -50,19 +43,13 @@ class HttpCurlClientService
                 'headers' => $headers
             ]);
         } elseif (true) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 150);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            $response = curl_exec($ch);
+            $bodyparam = $dataparam = 'body';
+            $response = $httpClient->request('POST', $url, [
+                $bodyparam => $type,
+                $dataparam => $data,
+                'headers' => $headers,
+            ]);
         }
-
         return $response->getContent();
     }
 
