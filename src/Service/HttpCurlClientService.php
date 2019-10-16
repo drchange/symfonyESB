@@ -36,7 +36,6 @@ class HttpCurlClientService
         $httpClient = new CurlHttpClient();
         $response = "";
 
-        
         if ($type === 'json') {
             $response = $httpClient->request('POST', $url, [
                 $type => $data,
