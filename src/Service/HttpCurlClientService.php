@@ -46,7 +46,7 @@ class HttpCurlClientService
             $data = str_replace("\n", "", $data);
             $data = str_replace("\t", "", $data);
             $data = str_replace("\r", "", $data);
-            dump($type, $data, $url);die();
+
             $response = $httpClient->request('POST', $url, [
                 $bodyparam => $type,
                 $dataparam => $data,
