@@ -44,6 +44,7 @@ class HttpCurlClientService
         } elseif (true) {
             $bodyparam = $dataparam = 'body';
             $req = str_replace("\n", "", $data);
+            dump($type, $data, $url);die();
             $response = $httpClient->request('POST', $url, [
                 $bodyparam => $type,
                 $dataparam => $data,
