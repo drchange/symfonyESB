@@ -58,7 +58,6 @@ class HttpCurlClientService
                 $dataparam => $data,
                 'headers' => $headers,
                 'timeout' => 150,
-                'connecttimeout' => 120,
             ]);
         }
 
