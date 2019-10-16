@@ -50,7 +50,7 @@ class HttpCurlClientService
                 'headers' => $headers,
             ]);
         }
-        dump($response);die();
+
         return $response->getContent();
     }
 
