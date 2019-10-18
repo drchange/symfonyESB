@@ -45,7 +45,7 @@ class ParameterService
     /* @function get parameters from request */
     public function getParams(Api $api, $request, string $flow, $requete){
        
-        $params = $this->getArrayParams($api, 'in');
+        $params = $this->getArrayParams($api, $request, 'in');
         $soapheader = $this->getArrayParams($api, 'soapheader');
         $criteria = array('api' => $api);
         $header = $this->headerManager->findBy($criteria);
@@ -64,7 +64,7 @@ class ParameterService
         if($api->getParserx()){
             $response = $this->parser->parse($api->getParserPhpIn(),"in", $response);
         }
-        $criteria = array('flow' => 'out', 'api' => $api);
+        $criteria = array('flow' => 'out', $request, 'api' => $api);
         $parameters = $this->paramManager->findBy($criteria);
         $result = new StdClass();
         foreach ($parameters as $param) {
@@ -75,7 +75,7 @@ class ParameterService
         return $result;
     }
 
-    public function getArrayParams(Api $api, string $type): array
+    public function getArrayParams(Api $api, $request, string $type): array
     {
         $criteria = array('flow' => $type, 'api' => $api);
         $parameters = $this->paramManager->findBy($criteria);
