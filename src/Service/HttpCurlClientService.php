@@ -47,8 +47,9 @@ class HttpCurlClientService
                 $dataparam => $data,
                 'headers' => $headers,
                 'timeout' => $timeout,
-                "verify_host" => $vHost, 
-                "verify_peer" => $vPeer
+                'verify_host' => $vHost, 
+                'verify_peer' => $vPeer,
+                'encoding' => 'UTF-8'
             ]);
         }
         return $response->getContent();
