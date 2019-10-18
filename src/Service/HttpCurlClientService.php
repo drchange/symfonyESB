@@ -48,7 +48,8 @@ class HttpCurlClientService
                 'headers' => $headers,
                 'timeout' => $timeout,
                 'verify_host' => $vHost, 
-                'verify_peer' => $vPeer
+                'verify_peer' => $vPeer,
+                'follow_redirect' => true
             ]);
         }
         return $response->getContent(); 
