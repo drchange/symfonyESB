@@ -110,7 +110,7 @@ class Api
     private $parserPhpOut ;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Header", mappedBy="api")
+     * @ORM\OneToMany(targetEntity="App\Entity\Header", mappedBy="api" , cascade={"persist"})
      */
     private $headers;
 

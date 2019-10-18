@@ -27,7 +27,7 @@ class Header
     private $value;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Api", inversedBy="headers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Api", inversedBy="headers" , cascade={"persist"})
      */
     private $api;
 
