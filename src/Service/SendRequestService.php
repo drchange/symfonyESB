@@ -37,7 +37,7 @@ class SendRequestService
                 case 'REST':
                     switch ($api->getBodyFormat()) {
                         case 'json':
-                            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod(), 'json', $headers, $api->getCurlConfig->getVerifypeer(), $api->getCurlConfig->getVerifyhost(), $api->getCurlConfig->getTimeout());
+                            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod(), 'json', $headers, $api->getCurl()->getVerifypeer(), $api->getCurl()->getVerifyhost(), $api->getCurl()->getTimeout());
                             break;
     
                         case 'xml':
@@ -53,7 +53,7 @@ class SendRequestService
                                 }
                             }
         
-                            $response = $this->http->push($api->getEndpoint(), $xml, $api->getMethod(), 'xml', $headers, $api->getCurlConfig->getVerifypeer(), $api->getCurlConfig->getVerifyhost(), $api->getCurlConfig->getTimeout());
+                            $response = $this->http->push($api->getEndpoint(), $xml, $api->getMethod(), 'xml', $headers, $api->getCurl()->getVerifypeer(), $api->getCurl()->getVerifyhost(), $api->getCurl()->getTimeout());
                             break;
                         
                         default:
@@ -79,7 +79,7 @@ class SendRequestService
                             $xml = str_replace($search, $replace, $xml);
                         }
 
-                        $response = $this->http->sendPOST($api->getEndpoint(),$xml,'xml', $headers, $api->getCurlConfig->getVerifypeer(), $api->getCurlConfig->getVerifyhost(), $api->getCurlConfig->getTimeout());
+                        $response = $this->http->sendPOST($api->getEndpoint(),$xml,'xml', $headers, $api->getCurl()->getVerifypeer(), $api->getCurl()->getVerifyhost(), $api->getCurl()->getTimeout());
     
                     }
                     
