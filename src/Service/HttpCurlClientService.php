@@ -60,7 +60,7 @@ class HttpCurlClientService
         $xmldata.='" symbol="AZM" /></ns2:purchaseValue><ns2:payType xmlns:ns1="http://www.nrs.eskom.co.za/xmlvend/base/2.1/schema" xsi:type="ns1:Cash"><ns1:tenderAmt value="';
         $xmldata.='100';
         $xmldata.='" symbol="AZM" /></ns2:payType></ns2:creditVendReq></soapenv:Body></soapenv:Envelope>';
-
+        dump($xmldata); die;
         $chp = curl_init($url);
         curl_setopt($chp, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($chp, CURLOPT_POST, 1);
