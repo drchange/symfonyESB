@@ -18,6 +18,7 @@ class HttpCurlClientService
     public function sendGET(string $url, $data) : string
     { 
         $httpClient = new CurlHttpClient();
+        $timeout = 500;
 
         $response = $httpClient->request('GET', $url, [
             'query' => $data,
