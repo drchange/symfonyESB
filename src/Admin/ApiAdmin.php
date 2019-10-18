@@ -76,7 +76,7 @@ final class ApiAdmin extends AbstractAdmin
                 ->end()
             ->end()
             ->tab('Configuration')
-                ->with('Requête', ['class' => 'col-md-6'])
+                ->with('Requête', ['class' => 'col-md-4'])
                     ->add('techno', ModelType::class,['property'=>'name', 'label'=>'WebServices'])
                     ->add('endpoint', UrlType::class, ['label'=>'Url (Endpoint)'])
                     ->add('method', ChoiceType::class, ['label'=>'Method',
@@ -85,14 +85,22 @@ final class ApiAdmin extends AbstractAdmin
                         'POST' => 'POST',
                         'PUT' => 'PUT' 
                       ]])
-                      ->add('bodyFormat', ChoiceType::class, ['label'=>'Format du Body',
+                     
+                ->end()
+                ->with('Curl HTTP', ['class' => 'col-md-4'])
+                    ->add('curl', ModelType::class, [
+                        'required' => true,
+                        'label' => 'Curl Configuration',
+                        'property' => 'id' // Use this because of reasons
+                    ])
+                     ->add('bodyFormat', ChoiceType::class, ['label'=>'Format du Body',
                         'choices' => [
                             'json' => 'json',
                             'xml' => 'xml',
                             'soap' => 'soap' 
                         ]])
                 ->end()
-                ->with('Reponse', ['class' => 'col-md-6'])
+                ->with('Reponse', ['class' => 'col-md-4'])
                     
                     ->add('decisionParam', null, ['label'=>'Paramètre de décision'])
                     ->add('valueSuccess', null, ['label'=>'Valeurs de success'])

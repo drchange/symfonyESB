@@ -81,3 +81,10 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: API, label: Header }
         public: true
+
+    admin.curl_config:
+        class: App\Admin\CurlConfigAdmin
+        arguments: [~, App\Entity\CurlConfig, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: CurlConfig }
+        public: true

@@ -129,6 +129,11 @@ class Api
      */
     private $soapservice;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\CurlConfig", cascade={"persist", "remove"})
+     */
+    private $curl;
+
 
     public function __construct()
     {
@@ -442,6 +447,18 @@ class Api
     public function setSoapservice(string $soapservice): self
     {
         $this->soapservice = $soapservice;
+
+        return $this;
+    }
+
+    public function getCurl(): ?CurlConfig
+    {
+        return $this->curl;
+    }
+
+    public function setCurl(?CurlConfig $curl): self
+    {
+        $this->curl = $curl;
 
         return $this;
     }

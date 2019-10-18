@@ -10,12 +10,12 @@ use Symfony\Component\HttpClient\CurlHttpClient;
 class HttpCurlClientService
 {
 
-    public function push(string $url, $data, string $method = 'GET', $type = 'json', $headers = null) : string
+    public function push(string $url, $data, string $method = 'GET', $type = 'json', $headers = null, $vHost= true, $vPeer = true, int $timeout = 300) : string
     {
-        return $this->{"send$method"}($url, $data, $type, $headers);
+        return $this->{"send$method"}($url, $data, $type, $headers, $vHost, $vPeer, $timeout);
     }
     
-    public function sendGET(string $url, $data) : string
+    public function sendGET(string $url, $data, $type, $headers, $vHost, $vPeer, $timeout) : string
     { 
         $httpClient = new CurlHttpClient();
         $timeout = 500;
@@ -28,7 +28,7 @@ class HttpCurlClientService
     }
     
     // type = "json/xml/raw data"
-    public function sendPOST(string $url, $data, $type = 'json', $headers = null, $vHost= true, $vPeer = true) : string
+    public function sendPOST(string $url, $data, $type = 'json', $headers = null, $vHost= true, $vPeer = true, $timeout) : string
     {
         $httpClient = new CurlHttpClient();
         $response = "";
