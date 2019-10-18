@@ -89,6 +89,26 @@ class Api
      */
     private $methodin;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $parser;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $parserx;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $parserPhpIn ;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $parserPhpOut ;
+
 
     public function __construct()
     {
@@ -286,6 +306,54 @@ class Api
     public function setMethodin(string $methodin): self
     {
         $this->methodin = $methodin;
+
+        return $this;
+    }
+
+    public function getParser(): ?bool
+    {
+        return $this->parser;
+    }
+
+    public function setParser(bool $parser): self
+    {
+        $this->parser = $parser;
+
+        return $this;
+    }
+
+    public function getParserx(): ?bool
+    {
+        return $this->parserx;
+    }
+
+    public function setParserx(bool $parserx): self
+    {
+        $this->parserx = $parserx;
+
+        return $this;
+    }
+
+    public function getParserPhpIn(): ?string
+    {
+        return $this->parserPhpIn;
+    }
+
+    public function setParserPhpIn(?string $parserPhpIn): self
+    {
+        $this->parserPhpIn = $parserPhpIn;
+
+        return $this;
+    }
+
+    public function getParserPhpOut(): ?string
+    {
+        return $this->parserPhpOut;
+    }
+
+    public function setParserPhpOut(?string $parserPhpOut): self
+    {
+        $this->parserPhpOut = $parserPhpOut;
 
         return $this;
     }

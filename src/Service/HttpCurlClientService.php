@@ -35,12 +35,14 @@ class HttpCurlClientService
     {
         $httpClient = new CurlHttpClient();
         $response = "";
+        $timeout = 1000;
 
         
         if ($type === 'json') {
             $response = $httpClient->request('POST', $url, [
                 $type => $data,
-                'headers' => $headers
+                'headers' => $headers,
+                'timeout' => $timeout
             ]);
         } elseif (true) {
             $bodyparam = $dataparam = 'body';
@@ -48,6 +50,7 @@ class HttpCurlClientService
                 $bodyparam => $type,
                 $dataparam => $data,
                 'headers' => $headers,
+                'timeout' => $timeout
             ]);
         }
         return $response->getContent();

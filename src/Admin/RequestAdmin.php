@@ -69,11 +69,25 @@ final class RequestAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
-            ->add('id')
-            ->add('status')
-            ->add('date')
-            ->add('origin')
-            ->add('iporigin')
+            ->tab('General')
+                ->with('Statut de la requete', ['class' => 'col-md-6'])
+                     ->add('status')
+                    ->add('date')
+                    ->add('origin')
+                    ->add('iporigin')
+                ->end()
+            ->end()
+            ->tab('Dumper')
+                ->with('Requête', ['class' => 'col-md-6'])
+                    ->add('dumpEntryIn')
+                    ->add('dumpEntryOut')
+                ->end()
+                ->with('Reponse', ['class' => 'col-md-6'])
+                    ->add('dumpResponseIn')
+                    ->add('dumpResponseOut')
+                ->end()
+            ->end();
+           
             ;
     }
 

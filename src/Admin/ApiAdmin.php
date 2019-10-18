@@ -129,6 +129,26 @@ final class ApiAdmin extends AbstractAdmin
                         'label' => 'Tag version XML',
                     ])
                 ->end()
+            ->end()
+             ->tab('Parser')
+                ->with('Parser Out', ['class' => 'col-md-6'])
+                    ->add('parser', null, ['label'=>'Avec Parser Out?'])
+                    ->add('parserPhpOut', TextareaType::class, [
+                        'required' => false,
+                        'label' => 'Code PHP',
+                        'trim' => true,
+                        'attr' => ['class' => 'text-editor', 'rows' => '50']
+                    ])
+                ->end()
+                ->with('Parser In', ['class' => 'col-md-6'])  
+                    ->add('parserx', null, ['label'=>'Avec Parser  In ?'])                  
+                    ->add('parserPhpIn', TextareaType::class, [
+                        'required' => false,
+                        'label' => 'Code PHP',
+                        'trim' => true,
+                        'attr' => ['class' => 'text-editor', 'rows' => '50']
+                    ])
+                ->end()
             ->end();
            /* ->add('techno', ModelType::class,['property'=>'name'])
             ->add('ref')

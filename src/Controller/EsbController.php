@@ -98,9 +98,10 @@ class EsbController extends AbstractController
             $requete->setApi($api);
             $requete->setDate(new DateTime());
             $requete->setStatus(false);
+            $requete->setDumpEntryIn(json_encode($request->request->all()));
             $requete = $requestMng->save($requete);
 
-            $response = $paramService->getParams($api, $request, "in");
+            $response = $paramService->getParams($api, $request, "in", $requete);
             $requete->setStatus(true);
             $requete = $requestMng->save($requete);
             /*if(!isset($response->{$api->getDecisionParam()})){

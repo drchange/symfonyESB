@@ -42,6 +42,26 @@ class Request
      */
     private $iporigin;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $dumpEntryIn;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $dumpEntryOut;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $dumpResponseIn;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $dumpResponseOut;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +123,54 @@ class Request
     public function setIporigin(?string $iporigin): self
     {
         $this->iporigin = $iporigin;
+
+        return $this;
+    }
+
+    public function getDumpEntryIn(): ?string
+    {
+        return $this->dumpEntryIn;
+    }
+
+    public function setDumpEntryIn(?string $dumpEntryIn): self
+    {
+        $this->dumpEntryIn = $dumpEntryIn;
+
+        return $this;
+    }
+
+    public function getDumpEntryOut(): ?string
+    {
+        return $this->dumpEntryOut;
+    }
+
+    public function setDumpEntryOut(?string $dumpEntryOut): self
+    {
+        $this->dumpEntryOut = $dumpEntryOut;
+
+        return $this;
+    }
+
+    public function getDumpResponseIn(): ?string
+    {
+        return $this->dumpResponseIn;
+    }
+
+    public function setDumpResponseIn(?string $dumpResponseIn): self
+    {
+        $this->dumpResponseIn = $dumpResponseIn;
+
+        return $this;
+    }
+
+    public function getDumpResponseOut(): ?string
+    {
+        return $this->dumpResponseOut;
+    }
+
+    public function setDumpResponseOut(?string $dumpResponseOut): self
+    {
+        $this->dumpResponseOut = $dumpResponseOut;
 
         return $this;
     }

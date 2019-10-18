@@ -70,7 +70,7 @@ class Parameter
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $regex;
+    private $regex = "/./";
 
     public function getId(): ?int
     {
