@@ -40,7 +40,7 @@ class HttpCurlClientService
         curl_setopt($chp, CURLOPT_ENCODING, 'UTF-8');
         curl_setopt($chp, CURLOPT_URL, $url);
         curl_setopt($chp, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
-        curl_setopt($chp, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($chp, CURLOPT_POSTFIELDS, trim($data));
         curl_setopt($chp, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($chp, CURLOPT_SSL_VERIFYPEER, 0);
         $response = curl_exec($chp);
