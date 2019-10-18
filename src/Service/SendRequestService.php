@@ -53,7 +53,7 @@ class SendRequestService
                                 }
                             }
         
-                            $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
+                            $response = $this->http->push($api->getEndpoint(), $xml, $api->getMethod(), 'xml', ["verify_host" => false, "verify_peer" => false]);
                             break;
                         
                         default:
@@ -71,8 +71,8 @@ class SendRequestService
                         $replace =  ${$param->getOutName()};
                         $xml = str_replace($search, $replace, $xml);
                     }
-                    //$response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml');
-    
+
+                    $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml', ["verify_host" => false, "verify_peer" => false]);
     
                     break;
                 
