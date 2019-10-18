@@ -34,8 +34,22 @@ class HttpCurlClientService
         $response = "";
         $timeout = 500;
 
+        $chp = curl_init($url);
+        curl_setopt($chp, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($chp, CURLOPT_POST, 1);
+        curl_setopt($chp, CURLOPT_ENCODING, 'UTF-8');
+        curl_setopt($chp, CURLOPT_URL, $url);
+        curl_setopt($chp, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+        curl_setopt($chp, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($chp, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($chp, CURLOPT_SSL_VERIFYPEER, 0);
+        $response = curl_exec($chp);
+        curl_error($chp);
+        curl_close($chp);
+        return $response;
+
         
-        if ($type === 'json') {
+    /*    if ($type === 'json') {
             $response = $httpClient->request('POST', $url, [
                 $type => $data,
                 'headers' => $headers
@@ -51,7 +65,7 @@ class HttpCurlClientService
                 'verify_peer' => $vPeer
             ]);
         }
-        return $response->getContent();
+        return $response->getContent(); */
     }
 
     
