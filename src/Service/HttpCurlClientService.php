@@ -46,10 +46,8 @@ class HttpCurlClientService
                 $bodyparam => $type,
                 $dataparam => $data,
                 'headers' => $headers,
-                'timeout' => $timeout,
                 'verify_host' => $vHost, 
-                'verify_peer' => $vPeer,
-                'follow_redirect' => true
+                'verify_peer' => $vPeer
             ]);
         }
         return $response->getContent(); 
