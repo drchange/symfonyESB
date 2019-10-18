@@ -58,9 +58,12 @@ class ParameterService
         if($api->getParser()){
             $params = $this->parser->parse($api->getParserPhpOut(),"out", $params);
         }
+
         $requete->setDumpEntryOut(json_encode($params));
+        $this->requestManager->save($requete);
         $response = $this->sendRequest->run($api, $params, $headers,$soapheader);
         $requete->setDumpResponseIn(json_encode($response));
+        $this->requestManager->save($requete);
         if($api->getParserx()){
             $response = $this->parser->parse($api->getParserPhpIn(),"in", $response);
         }
