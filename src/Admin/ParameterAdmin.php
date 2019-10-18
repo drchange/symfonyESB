@@ -67,7 +67,8 @@ final class ParameterAdmin extends AbstractAdmin
                     ->add('flow', ChoiceType::class, ['label'=>'Type',
                         'choices' => [
                             'in' => 'in',
-                            'out' => 'out'
+                            'out' => 'out',
+                            'soapheader' => 'soapheader'
                     ]])
                 ->end()
             ->end()

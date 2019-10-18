@@ -74,3 +74,10 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: API, label: Paramètres }
         public: true
+
+    admin.header:
+        class: App\Admin\HeaderAdmin
+        arguments: [~, App\Entity\Header, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: API, label: Header }
+        public: true

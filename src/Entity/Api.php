@@ -109,11 +109,32 @@ class Api
      */
     private $parserPhpOut ;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Header", mappedBy="api")
+     */
+    private $headers;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $haveWSDL;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $wsdl;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $soapservice;
+
 
     public function __construct()
     {
         $this->parameters = new ArrayCollection();
         $this->requests = new ArrayCollection();
+        $this->headers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -354,6 +375,73 @@ class Api
     public function setParserPhpOut(?string $parserPhpOut): self
     {
         $this->parserPhpOut = $parserPhpOut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Header[]
+     */
+    public function getHeaders(): Collection
+    {
+        return $this->headers;
+    }
+
+    public function addHeader(Header $header): self
+    {
+        if (!$this->headers->contains($header)) {
+            $this->headers[] = $header;
+            $header->setApi($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHeader(Header $header): self
+    {
+        if ($this->headers->contains($header)) {
+            $this->headers->removeElement($header);
+            // set the owning side to null (unless already changed)
+            if ($header->getApi() === $this) {
+                $header->setApi(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getHaveWSDL(): ?bool
+    {
+        return $this->haveWSDL;
+    }
+
+    public function setHaveWSDL(bool $haveWSDL): self
+    {
+        $this->haveWSDL = $haveWSDL;
+
+        return $this;
+    }
+
+    public function getWsdl(): ?string
+    {
+        return $this->wsdl;
+    }
+
+    public function setWsdl(string $wsdl): self
+    {
+        $this->wsdl = $wsdl;
+
+        return $this;
+    }
+
+    public function getSoapservice(): ?string
+    {
+        return $this->soapservice;
+    }
+
+    public function setSoapservice(string $soapservice): self
+    {
+        $this->soapservice = $soapservice;
 
         return $this;
     }

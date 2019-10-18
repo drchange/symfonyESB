@@ -26,18 +26,18 @@ class SendRequestService
     }
 
     /* @function send request */
-    public function run(Api $api, array $params)
+    public function run(Api $api, array $params, array $headers, array $soapheaders = [])
     {
         $techno = $api->getTechno()->getName();
         if($api->getMethod() == "GET")
         {
-            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod());
+            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod() );
         }elseif(true){
             switch ($techno) {
                 case 'REST':
                     switch ($api->getBodyFormat()) {
                         case 'json':
-                            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod());
+                            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod(), 'json', $headers);
                             break;
     
                         case 'xml':
@@ -53,7 +53,7 @@ class SendRequestService
                                 }
                             }
         
-                            $response = $this->http->push($api->getEndpoint(), $xml, $api->getMethod(), 'xml', ["verify_host" => false, "verify_peer" => false]);
+                            $response = $this->http->push($api->getEndpoint(), $xml, $api->getMethod(), 'xml', $headers);
                             break;
                         
                         default:
@@ -63,17 +63,26 @@ class SendRequestService
                     break;
     
                 case 'SOAP':
-                    $xml = trim($api->getSoapTemplate());
-                    $parameters = $api->getParameters();
-                    foreach ($parameters as $param) {
-                        ${$param->getOutName()} = $params[$param->getOutName()];
-                        $search = '$' . $param->getOutName();
-                        $replace =  ${$param->getOutName()};
-                        $xml = str_replace($search, $replace, $xml);
-                    }
+                    if($api->getHaveWSDL()){
+                        $wsdl= $api->getWsdl();
+                        $service = $api->getSoapservice();
+                        $client = new \SoapClient($wsdl, $soapheaders);
+                        $response = $client->call($service, $params);
+                    }elseif(true)
+                    {
+                        $xml = trim($api->getSoapTemplate());
+                        $parameters = $api->getParameters();
+                        foreach ($parameters as $param) {
+                            ${$param->getOutName()} = $params[$param->getOutName()];
+                            $search = '$' . $param->getOutName();
+                            $replace =  ${$param->getOutName()};
+                            $xml = str_replace($search, $replace, $xml);
+                        }
 
-                    $response = $this->http->push($api->getEndpoint(),$xml,$api->getMethod(),'xml', ["verify_host" => false, "verify_peer" => false]);
+                        $response = $this->http->sendPOST($api->getEndpoint(),$xml,'xml', $headers, false, false);
     
+                    }
+                    
                     break;
                 
                 default:

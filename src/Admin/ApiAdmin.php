@@ -98,6 +98,22 @@ final class ApiAdmin extends AbstractAdmin
                     ->add('valueSuccess', null, ['label'=>'Valeurs de success'])
                 ->end()
             ->end()
+
+            ->tab('En têtes')
+                ->with('Headers', ['class' => 'col-md-12'])          
+                    ->add('headers', CollectionType::class, [
+                        'required' => false,
+                        'action' => '',
+                        'label' => 'headers',
+                        'by_reference' => false // Use this because of reasons
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                        'sortable' => 'position',
+                    ])
+                ->end()
+                
+            ->end()
             
             ->tab('Paramètres')
                 ->with('Gestion des paramètres', ['class' => 'col-md-12'])          
@@ -115,7 +131,11 @@ final class ApiAdmin extends AbstractAdmin
                 
             ->end()
             ->tab('XML/SOAP')
-                ->with('Requête XML/SOAP', ['class' => 'col-md-6'])          
+                ->with('XML', ['class' => 'col-md-6'])
+                    ->add('xmltagversion', null, [
+                        'required' => false,
+                        'label' => 'Tag version XML',
+                    ])          
                     ->add('soapTemplate', TextareaType::class, [
                         'required' => false,
                         'label' => 'Requête XML/SOAP',
@@ -123,11 +143,18 @@ final class ApiAdmin extends AbstractAdmin
                         'attr' => ['class' => 'text-editor', 'rows' => '50']
                     ])
                 ->end()
-                ->with('Reponse XML/SOAP', ['class' => 'col-md-6'])          
-                    ->add('xmltagversion', null, [
+                ->with('SOAP', ['class' => 'col-md-6'])          
+                    ->add('haveWSDL', null, [
+                        'label' => 'WSDL ?',
+                    ]) 
+                    ->add('wsdl', null, [
                         'required' => false,
-                        'label' => 'Tag version XML',
-                    ])
+                        'label' => 'URL wsdl',
+                    ])  
+                    ->add('soapservice', null, [
+                        'required' => false,
+                        'label' => 'Service SOAP',
+                    ])     
                 ->end()
             ->end()
              ->tab('Parser')
@@ -137,7 +164,7 @@ final class ApiAdmin extends AbstractAdmin
                         'required' => false,
                         'label' => 'Code PHP',
                         'trim' => true,
-                        'attr' => ['class' => 'text-editor', 'rows' => '50']
+                        'attr' => ['class' => 'php-editor', 'rows' => '50']
                     ])
                 ->end()
                 ->with('Parser In', ['class' => 'col-md-6'])  
@@ -146,7 +173,7 @@ final class ApiAdmin extends AbstractAdmin
                         'required' => false,
                         'label' => 'Code PHP',
                         'trim' => true,
-                        'attr' => ['class' => 'text-editor', 'rows' => '50']
+                        'attr' => ['class' => 'php-editor', 'rows' => '50']
                     ])
                 ->end()
             ->end();
