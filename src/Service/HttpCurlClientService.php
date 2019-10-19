@@ -22,7 +22,10 @@ class HttpCurlClientService
 
         $response = $httpClient->request('GET', $url, [
             'query' => $data,
-            'timeout' => $timeout
+            'timeout' => $timeout,
+            'headers' => $headers,
+            'verify_host' => $vHost, 
+            'verify_peer' => $vPeer
         ]);
         return $response->getContent();
     }

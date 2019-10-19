@@ -31,7 +31,8 @@ class SendRequestService
         $techno = $api->getTechno()->getName();
         if($api->getMethod() == "GET")
         {
-            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod() );
+            $response = $this->http->push($api->getEndpoint(),$params, $api->getMethod(), 'json', $headers, $api->getCurl()->getVerifypeer(), $api->getCurl()->getVerifyhost(), $api->getCurl()->getTimeout());
+            
         }elseif(true){
             switch ($techno) {
                 case 'REST':
