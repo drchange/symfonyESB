@@ -2,4 +2,4 @@
 ESB Symfony 
 
 
-Licence Afrikpay
+by Afrikpay
