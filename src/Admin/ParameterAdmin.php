@@ -68,7 +68,7 @@ final class ParameterAdmin extends AbstractAdmin
                         'choices' => [
                             'in' => 'in',
                             'out' => 'out',
-                            'soapheader' => 'soapheader'
+                            'soapheader' => 'soa'
                     ]])
                 ->end()
             ->end()
